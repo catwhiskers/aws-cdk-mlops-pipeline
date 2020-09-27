@@ -6,7 +6,7 @@ This’s a sample solution to build a deployment pipeline for Amazon SageMaker. 
 
 This solution provides as deployment by creating an Amazon SageMaker Endpoint for real-time inference.
 
-## Architecture and Implementation
+## Architecture
 ###  Architecture Diagram
 ![mlops](./img/AWS-Machine-Learning-DevOps-Pipeline.jpg)
 
@@ -26,23 +26,11 @@ This solution provides as deployment by creating an Amazon SageMaker Endpoint fo
 - [**AWS SNS**](https://aws.amazon.com/sns/) – This solution uses a Simple Notification Service (SNS) Topic in order to approve movement into production after testing.
 - [**AWS S3**](https://aws.amazon.com/s3/) – Artifacts created throughout the pipeline as well as the data for the model is stored in an Simple Storage Service (S3) Bucket.
 
-### Running Costs
-
-This section outlines cost considerations for running the SageMaker Deployment Pipeline. Completing the pipeline will deploy development SageMaker endpoints, transform jobs which will cost less than $10 per day. Further cost breakdowns are below.
-
-- **AWS CodeCommit** – Charges per active users used. First 5 active users are free the after $1/month.
-- **AWS CodeBuild** – Charges per minute used. First 100 minutes each month come at no charge. For information on pricing beyond the first 100 minutes, see [AWS CodeBuild Pricing](https://aws.amazon.com/codebuild/pricing/).
-- **AWS CodePipeline** – CodePipeline costs $1 per active pipeline* per month. Pipelines are free for the first 30 days after creation. For more can be found at [AWS CodePipeline Pricing](https://aws.amazon.com/codepipeline/pricing/).
-- **Amazon SNS** - Charges per requests used. First 1 million per month are free. $0.50 per 1 million Amazon SNS requests thereafter. Each 64KB chunk of published data is billed as 1 request. For more can be found at [Amazon SNS Pricing](https://aws.amazon.com/sns/pricing/)
-- **Amazon ECR** - Charges per stroage $0.10 per GB-month. For more can be found at [Amazon ECR Pricing](https://aws.amazon.com/ecr/pricing/)
-- **Amazon S3** - Charges per stroage and data transfer transferred. More can be found at [Amazon S3 Pricing](https://aws.amazon.com/s3/pricing/)
-- **Amazon SageMaker** – Prices vary based on EC2 instance usage for Building in Notebook Instances, Model Hosting, and Model Training; each charged per hour of use. This example currently uses the `ml.c4.xlarge` instance for training and hosting. For more information, see [Amazon SageMaker Pricing](https://aws.amazon.com/sagemaker/pricing/)
-
-### Deployment Steps
-####  Step 1. Prepare an AWS Account and IAM Access
+## Deployment Steps
+###  Step 1. Prepare an AWS Account and IAM Access
 Create your AWS account at [http://aws.amazon.com](http://aws.amazon.com) by following the instructions on the site. Then create IAM User permission setting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your environment variables.
 
-####  Step 2. CDK Install and Bootstarp
+###  Step 2. CDK Install and Bootstarp
 
 Install [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/tools.html) from npm
 
@@ -56,7 +44,7 @@ For first initial, run `bootstrap` deploy in your acoount.
 $ cdk bootstrap
 ```
 
-#### Step 3. Configure deployment manager email
+### Step 3. Configure deployment manager email
 
 Modify `deploy_approval_email` in [cdk.content.json](https://github.com/shazi7804/aws-cdk-mlops-pipeline/blob/master/cdk.context.json), The deployment administrator will be notified for review when the model is deployed.
 
@@ -67,7 +55,7 @@ Modify `deploy_approval_email` in [cdk.content.json](https://github.com/shazi780
 }
 ```
 
-####  Step 4. Launch Build, Train and Deploy Stack
+###  Step 4. Launch Build, Train and Deploy Stack
 
 Using [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/tools.html) deploy stack.
 
@@ -90,7 +78,7 @@ $ cdk deploy DeployPipelineStack
 
 At the same time you can find these stacks in `CloudFormation`.
 
-####  Step 5. Building your own algorithm container
+###  Step 5. Building your own algorithm container
 
 Using [repository/train](https://github.com/shazi7804/aws-cdk-mlops-pipeline/tree/master/repository/train) packaging an algorithm in a container
 
@@ -105,13 +93,13 @@ $ git push origin master
 
 > `Developer push code` > `CodeCommit` > `CodeBuild` > push image > `ECR`
 
-####  Step 6. Upload training data to S3 bucket
+###  Step 6. Upload training data to S3 bucket
 
 ```
 $ aws s3 cp data/iris.csv s3://sagemaker-datalake-${REGION}-${ACCOUNT_ID}/iris/input/iris.csv
 ```
 
-####  Step 7. Create training job and model of SageMaker
+###  Step 7. Create training job and model of SageMaker
 
 This step used instance type `ml.c4.xlarge` and `Spot instance` for the training job.
 
@@ -128,7 +116,7 @@ After the training is completed, the model will also be deployed to SageMaker.
 
 > `Developer push code` > `CodeCommit` > `CodeBuild` > trigger training job > `SageMaker training jobs`
 
-####  Step 8. Deployment Inference stage
+###  Step 8. Deployment Inference stage
 
 This step used instance type `ml.c4.xlarge` for the transform job.
 
@@ -140,7 +128,7 @@ $ cp -R repository/deploy/* deploy-scikit_bring_your_own/
 $ cd deploy-scikit_bring_your_own/
 ```
 
-- ##### Create batch transform jobs for inference (default)
+#### Create batch transform jobs for inference (default)
 
 Refer to the model name generated of Step 7. to define `new_model_name` and `input_data` parameters.
 
@@ -155,7 +143,7 @@ phases:
       - python deploy-transform-job.py $new_model_name $input_data
 ```
 
-- ##### Create read-time endpoint for inference
+#### Create read-time endpoint for inference
 
 Refer to the model name generated of Step 7. to define `new_model_name` parameter.
 
@@ -169,7 +157,7 @@ phases:
       - python deploy-endpoint.py $new_model_name
 ```
 
-- ##### Update blue/green model deployment read-time endpoint for inference
+#### Update blue/green model deployment read-time endpoint for inference
 
 Refer to the new and old model name generated of Step 7. to define `new_model_name` and `live_model_name` parameters.
 
@@ -192,19 +180,24 @@ $ git commit -am "create inference"
 $ git push origin master
 ```
 
-####  Step 9. Inference deployment review and approval
+###  Step 9. Inference deployment review and approval
 
 Notify reviewer `<deploy_approval_email>` to review and approval when deployment is triggered.
 
 <img src="./img/deploy-approval.png" width="350">
 
-## Test
 
-To build the project and run the test, issue these commands.
+## Running Costs
 
-```
-$ npm run build && npm test
-```
+This section outlines cost considerations for running the SageMaker Deployment Pipeline. Completing the pipeline will deploy development SageMaker endpoints, transform jobs which will cost less than $10 per day. Further cost breakdowns are below.
+
+- **AWS CodeCommit** – Charges per active users used. First 5 active users are free the after $1/month.
+- **AWS CodeBuild** – Charges per minute used. First 100 minutes each month come at no charge. For information on pricing beyond the first 100 minutes, see [AWS CodeBuild Pricing](https://aws.amazon.com/codebuild/pricing/).
+- **AWS CodePipeline** – CodePipeline costs $1 per active pipeline* per month. Pipelines are free for the first 30 days after creation. For more can be found at [AWS CodePipeline Pricing](https://aws.amazon.com/codepipeline/pricing/).
+- **Amazon SNS** - Charges per requests used. First 1 million per month are free. $0.50 per 1 million Amazon SNS requests thereafter. Each 64KB chunk of published data is billed as 1 request. For more can be found at [Amazon SNS Pricing](https://aws.amazon.com/sns/pricing/)
+- **Amazon ECR** - Charges per stroage $0.10 per GB-month. For more can be found at [Amazon ECR Pricing](https://aws.amazon.com/ecr/pricing/)
+- **Amazon S3** - Charges per stroage and data transfer transferred. More can be found at [Amazon S3 Pricing](https://aws.amazon.com/s3/pricing/)
+- **Amazon SageMaker** – Prices vary based on EC2 instance usage for Building in Notebook Instances, Model Hosting, and Model Training; each charged per hour of use. This example currently uses the `ml.c4.xlarge` instance for training and hosting. For more information, see [Amazon SageMaker Pricing](https://aws.amazon.com/sagemaker/pricing/)
 
 ## Parameters
 
@@ -233,10 +226,13 @@ deploy_codepipeline_name | The parameter of codepipeline name of deploy stack. d
 deploy_notifications_email | The parameter of codepipeline name of deploy stack. default is ''
 deploy_approval_email | The parameter of codepipeline approval stage notifiy the reviewer of deploy stack. default is `your@email.com`
 
+## Test
 
-train_codecommit_repo | The parameter of codecommit repository name of train stack.
-deploy_codecommit_repo | The parameter of codecommit repository name of deploy stack.
+To build the project and run the test, issue these commands.
 
+```
+$ npm run build && npm test
+```
 
 [CodeCommit]: https://aws.amazon.com/codecommit/
 [CodeBuild]: https://aws.amazon.com/codebuild/
