@@ -140,7 +140,7 @@ $ cp -R repository/deploy/* deploy-scikit_bring_your_own/
 $ cd deploy-scikit_bring_your_own/
 ```
 
-##### Create batch transform jobs for inference (default)
+- ##### Create batch transform jobs for inference (default)
 
 Refer to the model name generated of Step 7. to define `new_model_name` and `input_data` parameters.
 
@@ -155,7 +155,7 @@ phases:
       - python deploy-transform-job.py $new_model_name $input_data
 ```
 
-##### Create read-time endpoint for inference
+- ##### Create read-time endpoint for inference
 
 Refer to the model name generated of Step 7. to define `new_model_name` parameter.
 
@@ -169,7 +169,7 @@ phases:
       - python deploy-endpoint.py $new_model_name
 ```
 
-##### Update blue/green model deployment read-time endpoint for inference
+- ##### Update blue/green model deployment read-time endpoint for inference
 
 Refer to the new and old model name generated of Step 7. to define `new_model_name` and `live_model_name` parameters.
 
@@ -196,7 +196,7 @@ $ git push origin master
 
 Notify reviewer `<deploy_approval_email>` to review and approval when deployment is triggered.
 
-![approval](./img/deploy-approval.png | width=100)
+<img src="./img/deploy-approval.png" width="100">
 
 ## Test
 
