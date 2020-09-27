@@ -196,7 +196,7 @@ $ git push origin master
 
 Notify reviewer `<deploy_approval_email>` to review and approval when deployment is triggered.
 
-<img src="./img/deploy-approval.png" width="100">
+<img src="./img/deploy-approval.png" width="350">
 
 ## Test
 
