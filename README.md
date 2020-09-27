@@ -208,6 +208,8 @@ $ npm run build && npm test
 
 ## Parameters
 
+You can customize environment parameters in [cdk.content.json](https://github.com/shazi7804/aws-cdk-mlops-pipeline/blob/master/cdk.context.json)
+
 Parameters | Description
 ---------- | -----------
 ecr_repo | The parameter of ECR repository name of build stack. default is `sagemaker-scikit_bring_your_own`
