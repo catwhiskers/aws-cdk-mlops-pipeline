@@ -208,6 +208,34 @@ $ npm run build && npm test
 
 ## Parameters
 
+Parameters | Description
+---------- | -----------
+ecr_repo | The parameter of ECR repository name of build stack. default is `sagemaker-scikit_bring_your_own`
+build_codecommit_repo | The parameter of codecommit repository name of build stack. default is `build-scikit_bring_your_own`
+build_codecommit_branch | The parameter of codecommit default branch name of build stack. default is `master`
+build_codebuild_project | The parameter of codebuild project name of build stack. default is `build-scikit_bring_your_own`
+build_codepipeline_name | The parameter of codepipeline name of build stack. default is `build-scikit_bring_your_own`
+build_codepipeline_name | The parameter of codepipeline name of build stack. default is `build-scikit_bring_your_own`
+build_notifications_email | The parameter of codepipeline name of build stack. default is ''
+train_codecommit_repo | The parameter of codecommit repository name of train stack. default is `train-scikit_bring_your_own`
+train_codecommit_branch | The parameter of codecommit default branch name of train stack. default is `master`
+train_codebuild_project | The parameter of codebuild project name of train stack. default is `train-scikit_bring_your_own`
+train_codepipeline_name | The parameter of codepipeline name of train stack. default is `train-scikit_bring_your_own`
+train_codepipeline_name | The parameter of codepipeline name of train stack. default is `train-scikit_bring_your_own`
+train_notifications_email | The parameter of codepipeline name of train stack. default is ''
+deploy_codecommit_repo | The parameter of codecommit repository name of deploy stack. default is `deploy-scikit_bring_your_own`
+deploy_codecommit_branch | The parameter of codecommit default branch name of deploy stack. default is `master`
+deploy_codebuild_project | The parameter of codebuild project name of deploy stack. default is `deploy-scikit_bring_your_own`
+deploy_codepipeline_name | The parameter of codepipeline name of deploy stack. default is `deploy-scikit_bring_your_own`
+deploy_codepipeline_name | The parameter of codepipeline name of deploy stack. default is `deploy-scikit_bring_your_own`
+deploy_notifications_email | The parameter of codepipeline name of deploy stack. default is ''
+deploy_approval_email | The parameter of codepipeline approval stage notifiy the reviewer of deploy stack. default is `your@email.com`
+
+
+train_codecommit_repo | The parameter of codecommit repository name of train stack.
+deploy_codecommit_repo | The parameter of codecommit repository name of deploy stack.
+
+
 [CodeCommit]: https://aws.amazon.com/codecommit/
 [CodeBuild]: https://aws.amazon.com/codebuild/
 [CodePipeline]: https://aws.amazon.com/codepipeline/
