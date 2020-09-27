@@ -7,7 +7,7 @@ region = os.environ["AWS_DEFAULT_REGION"]
 
 # e.g. s3://sagemaker/input-data-prediction/
 input_data = sys.argv[2]
-output_data = 's3://' + 'sagemaker-datalake-' + region + account + '/transform-prediction/output'
+output_data = 's3://' + 'sagemaker-datalake-' + region + '-' + account + '/transform-prediction/output'
 
 build_number = os.environ['CODEBUILD_BUILD_NUMBER']
 transform_job_name = 'scikit-bring-your-own-v' + build_number

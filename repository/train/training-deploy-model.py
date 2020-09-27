@@ -9,10 +9,10 @@ build_version = '-v' + os.environ['CODEBUILD_BUILD_NUMBER']
 job_name = job_name_prefix + build_version
 
 # train info
-container = '{}.dkr.ecr.{}.amazonaws.com/mlops-scikit_bring_your_own:latest'.format(account, region) 
+container = '{}.dkr.ecr.{}.amazonaws.com/sagemaker-scikit_bring_your_own:latest'.format(account, region) 
 role = 'arn:aws:iam::{}:role/SageMakerExecutionRole'.format(account)
 
-bucket = 's3://' + 'sagemaker-datalake-' + region + account
+bucket = 's3://' + 'sagemaker-datalake-' + region + '-' + account
 input_data = bucket + '/iris/input/iris.csv'
 # input_data = bucket + '/iris/input/'
 output_location = bucket + '/iris/output'
@@ -21,18 +21,6 @@ train_instance_type = 'ml.c4.xlarge'
 train_instance_count = 1
 use_spot_instances = True
 
-# trigger job training
-# tree = sagemaker.estimator.Estimator(image, 
-#     role,
-#     train_instance_count,
-#     train_instance_type,
-#     use_spot_instances=use_spot_instances,
-#     max_wait=86400,
-#     output_path=output_location, 
-#     sagemaker_session=sagemaker.Session()) 
-# tree.fit(inputs=data_location, job_name=job_name, wait=False)
-
-# print('job created with name: ' + job_name)
 
 sagemaker = boto3.client('sagemaker')
 

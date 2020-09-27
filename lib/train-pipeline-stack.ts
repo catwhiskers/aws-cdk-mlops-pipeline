@@ -42,7 +42,7 @@ export class TrainPipelineStack extends cdk.Stack {
 
 
     const dataLakeBucket = new s3.Bucket(this, 'DataLakeStarter', {
-      bucketName: 'sagemaker-datalake-' + this.region + this.account,
+      bucketName: 'sagemaker-datalake-' + this.region + '-' + this.account,
       versioned: true
     });
 

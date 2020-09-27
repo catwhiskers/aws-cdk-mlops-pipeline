@@ -1,11 +1,11 @@
 {
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true",
-    "ecr_repo": "mlops-scikit_bring_your_own",
-    "build_codecommit_repo": "devops-scikit_bring_your_own",
+    "ecr_repo": "sagemaker-scikit_bring_your_own",
+    "build_codecommit_repo": "build-scikit_bring_your_own",
     "build_codecommit_branch": "master",
-    "build_codebuild_project": "devops-scikit_bring_your_own",
-    "build_codepipeline_name": "devops-scikit_bring_your_own",
+    "build_codebuild_project": "build-scikit_bring_your_own",
+    "build_codepipeline_name": "build-scikit_bring_your_own",
     "build_notifications_email": "",
     "train_codecommit_repo": "train-scikit_bring_your_own",
     "train_codecommit_branch": "master",
@@ -17,11 +17,5 @@
     "deploy_codebuild_project": "deploy-scikit_bring_your_own",
     "deploy_codepipeline_name": "deploy-scikit_bring_your_own",
     "deploy_notifications_email": "",
-    "deploy_approval_email": "shazi7804@gmail.com",
-    "model_endpoint_name": "mlops-Endpoint",
-    "model_data_url": "s3://mlops-datalake-scottliao/iris.csv",
-    "model_initial_varian_name": "mlops-name-1",
-    "model_instance_type": "ml.t2.large",
-    "model_instance_count": 1,
-    "model_initial_varian_weight": 1
+    "deploy_approval_email": "your@email.com"
 }

@@ -3,19 +3,20 @@ version: 0.2
 env:
   variables:
     #  live_model_name: "scikit-bring-your-own-v10"
-     new_model_name: "scikit-bring-your-own-v11"
-     input_data: "s3://sagemaker-datalake-us-east-1381354187112/iris/input/iris.csv"
+    new_model_name: "scikit-bring-your-own-v1"
 phases:
   install:
     runtime-versions:
       python: 3.7
+    commands:
+      - INPUT_DATA="s3://sagemaker-datalake-${AWS_DEFAULT_REGION}-${AWS_ACCOUNT_ID}/iris/input/iris.csv"
   build:
     commands:
       - pip install -r requirements.txt
       #################################################
-      #### If you deploy batch transform jobs
+      #### If you deploy batch transform jobs (default)
       #################################################
-      - python deploy-transform-job.py $new_model_name $input_data
+      - python deploy-transform-job.py $new_model_name $INPUT_DATA
       #################################################
       #### If you deploy real-time endpoint
       ##### 1. first deploy use `deploy-endpoint.py
@@ -23,6 +24,3 @@ phases:
       ################################################# 
       # - python deploy-endpoint.py $new_model_name
       # - python update-endpoint.py $live_model_name $new_model_name
-
-
-      

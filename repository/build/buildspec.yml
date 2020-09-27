@@ -6,4 +6,4 @@ phases:
   build:
     commands:
       - cd ./container
-      - ./build_and_push.sh mlops-scikit_bring_your_own
+      - ./build_and_push.sh sagemaker-scikit_bring_your_own

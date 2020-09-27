@@ -3,7 +3,7 @@ import boto3, sys, os
 model_name = sys.argv[1]
 
 build_number = os.environ['CODEBUILD_BUILD_NUMBER']
-endpoint_config_name_prefix = 'scikit-bring-your-own'
+endpoint_config_name_prefix = 'scikit-bring-your-own-v'
 endpoint_config_name = endpoint_config_name_prefix + build_number
 endpoint_name = 'scikit-bring-your-own'
 

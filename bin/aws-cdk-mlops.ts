@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 import * as cdk from '@aws-cdk/core';
-import * as ecr from "@aws-cdk/aws-ecr";
 import { BuildPipelineStack } from '../lib/build-pipeline-stack';
 import { TrainPipelineStack } from '../lib/train-pipeline-stack';
 import { DeployPipelineStack } from '../lib/deploy-pipeline-stack';
@@ -27,7 +26,6 @@ const trainPipelineStack = new TrainPipelineStack(app, 'TrainPipelineStack', {
     train_codepipeline_name: app.node.tryGetContext('train_codepipeline_name'),
     train_notifications_email: app.node.tryGetContext('train_notifications_email'),
 });
-trainPipelineStack.addDependency(buildPipelineStack);
 
 const deployPipelineStack = new DeployPipelineStack(app, 'DeployPipelineStack', {
     env: env,
