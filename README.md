@@ -26,7 +26,7 @@ This solution provides as deployment by creating an Amazon SageMaker Endpoint fo
 - [**AWS SNS**](https://aws.amazon.com/sns/) – This solution uses a Simple Notification Service (SNS) Topic in order to approve movement into production after testing.
 - [**AWS S3**](https://aws.amazon.com/s3/) – Artifacts created throughout the pipeline as well as the data for the model is stored in an Simple Storage Service (S3) Bucket.
 
-## Running Costs
+### Running Costs
 
 This section outlines cost considerations for running the SageMaker Deployment Pipeline. Completing the pipeline will deploy development SageMaker endpoints, transform jobs which will cost less than $10 per day. Further cost breakdowns are below.
 
@@ -38,11 +38,11 @@ This section outlines cost considerations for running the SageMaker Deployment P
 - **Amazon S3** - Charges per stroage and data transfer transferred. More can be found at [Amazon S3 Pricing](https://aws.amazon.com/s3/pricing/)
 - **Amazon SageMaker** – Prices vary based on EC2 instance usage for Building in Notebook Instances, Model Hosting, and Model Training; each charged per hour of use. This example currently uses the `ml.c4.xlarge` instance for training and hosting. For more information, see [Amazon SageMaker Pricing](https://aws.amazon.com/sagemaker/pricing/)
 
-## Deployment Steps
-###  Step 1. Prepare an AWS Account and IAM Access
+### Deployment Steps
+####  Step 1. Prepare an AWS Account and IAM Access
 Create your AWS account at [http://aws.amazon.com](http://aws.amazon.com) by following the instructions on the site. Then create IAM User permission setting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your environment variables.
 
-###  Step 2. CDK Install and Bootstarp
+####  Step 2. CDK Install and Bootstarp
 
 Install [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/tools.html) from npm
 
@@ -56,7 +56,7 @@ For first initial, run `bootstrap` deploy in your acoount.
 $ cdk bootstrap
 ```
 
-### Step 3. Configure deployment manager email
+#### Step 3. Configure deployment manager email
 
 Modify `deploy_approval_email` in [cdk.content.json](https://github.com/shazi7804/aws-cdk-mlops-pipeline/blob/master/cdk.context.json), The deployment administrator will be notified for review when the model is deployed.
 
@@ -67,7 +67,7 @@ Modify `deploy_approval_email` in [cdk.content.json](https://github.com/shazi780
 }
 ```
 
-###  Step 4. Launch Build, Train and Deploy Stack
+####  Step 4. Launch Build, Train and Deploy Stack
 
 Using [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/tools.html) deploy stack.
 
@@ -90,7 +90,7 @@ $ cdk deploy DeployPipelineStack
 
 At the same time you can find these stacks in `CloudFormation`.
 
-###  Step 5. Building your own algorithm container
+####  Step 5. Building your own algorithm container
 
 Using [repository/train](https://github.com/shazi7804/aws-cdk-mlops-pipeline/tree/master/repository/train) packaging an algorithm in a container
 
@@ -105,13 +105,13 @@ $ git push origin master
 
 > `Developer push code` > `CodeCommit` > `CodeBuild` > push image > `ECR`
 
-###  Step 6. Upload training data to S3 bucket
+####  Step 6. Upload training data to S3 bucket
 
 ```
 $ aws s3 cp data/iris.csv s3://sagemaker-datalake-${REGION}-${ACCOUNT_ID}/iris/input/iris.csv
 ```
 
-###  Step 7. Create training job and model of SageMaker
+####  Step 7. Create training job and model of SageMaker
 
 This step used instance type `ml.c4.xlarge` and `Spot instance` for the training job.
 
@@ -128,7 +128,7 @@ After the training is completed, the model will also be deployed to SageMaker.
 
 > `Developer push code` > `CodeCommit` > `CodeBuild` > trigger training job > `SageMaker training jobs`
 
-###  Step 8. Deployment Inference stage
+####  Step 8. Deployment Inference stage
 
 This step used instance type `ml.c4.xlarge` for the transform job.
 
@@ -140,7 +140,7 @@ $ cp -R repository/deploy/* deploy-scikit_bring_your_own/
 $ cd deploy-scikit_bring_your_own/
 ```
 
-- Create batch transform jobs for inference (default)
+##### Create batch transform jobs for inference (default)
 
 Refer to the model name generated of Step 7. to define `new_model_name` and `input_data` parameters.
 
@@ -155,22 +155,48 @@ phases:
       - python deploy-transform-job.py $new_model_name $input_data
 ```
 
-Push code trigger pipeline create SageMaker `Batch transform job`.
+##### Create read-time endpoint for inference
+
+Refer to the model name generated of Step 7. to define `new_model_name` parameter.
+
+```YAML
+env:
+  variables:
+    new_model_name: "scikit-bring-your-own-v1"
+phases:
+  build:
+    commands:
+      - python deploy-endpoint.py $new_model_name
+```
+
+##### Update blue/green model deployment read-time endpoint for inference
+
+Refer to the new and old model name generated of Step 7. to define `new_model_name` and `live_model_name` parameters.
+
+```YAML
+env:
+  variables:
+    live_model_name: "scikit-bring-your-own-v1"
+    new_model_name: "scikit-bring-your-own-v2"
+phases:
+  build:
+    commands:
+      - python update-endpoint.py $live_model_name $new_model_name
+```
+
+Push code trigger pipeline create SageMaker.
 
 ```bash
 $ git add .
-$ git commit -am "create batch transform by `scikit-bring-your-own-v1` model"
+$ git commit -am "create inference"
 $ git push origin master
 ```
-
-- Create read-time endpoint for inference
 
 ####  Step 9. Inference deployment review and approval
 
 Notify reviewer `<deploy_approval_email>` to review and approval when deployment is triggered.
 
-![approval](./img/deploy-approval.png)
-
+![approval](./img/deploy-approval.png | width=100)
 
 ## Test
 
