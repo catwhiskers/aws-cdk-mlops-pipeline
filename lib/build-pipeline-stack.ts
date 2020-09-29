@@ -75,7 +75,8 @@ export class BuildPipelineStack extends cdk.Stack {
       "ecr:UploadLayerPart",
       "ecr:CompleteLayerUpload",
       "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage"
+      "ecr:PutImage",
+      "ecr:CreateRepository"
     )
     codebuildProject.addToRolePolicy(codeBuildPolicyEcr);
 
