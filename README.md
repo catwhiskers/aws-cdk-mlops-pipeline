@@ -1,19 +1,16 @@
 # AWS CDK of SageMaker MLOps Build, Train and Deploy your own container
 
+This’s a sample solution to build a deployment pipeline for Amazon SageMaker. For the complex execution process of machine learning, fast and simple model training can be realized through automation, and the ML code can be quickly updated to meet the demand.
+
+This solution provides as deployment by creating an Amazon SageMaker Endpoint/Transform for inference.
+
 ## Table of contents
 
-- [Introduction](#introduction)
 - [Architecture](#architecture)
 - [Deployment](#deployment-steps)
 - [Running Costs](#running-costs)
 - [Parameters](#parameters)
 - [Test](#test)
-
-## Introduction
-
-This’s a sample solution to build a deployment pipeline for Amazon SageMaker. For the complex execution process of machine learning, fast and simple model training can be realized through automation, and the ML code can be quickly updated to meet the demand.
-
-This solution provides as deployment by creating an Amazon SageMaker Endpoint/Transform for inference.
 
 ## Architecture
 ###  Architecture Diagram
@@ -163,6 +160,7 @@ This deployment default using `ml.t2.medium` instance type resident running. The
 Refer to the model name generated of Step 7. to define `new_model_name` parameter.
 
 ```YAML
+# buildspec.yml
 env:
   variables:
     new_model_name: "scikit-bring-your-own-v1"
@@ -177,6 +175,7 @@ phases:
 Refer to the new and old model name generated of Step 7. to define `new_model_name` and `live_model_name` parameters.
 
 ```YAML
+# buildspec.yml
 env:
   variables:
     live_model_name: "scikit-bring-your-own-v1"
@@ -203,7 +202,13 @@ Notify reviewer `<deploy_approval_email>` to review and approval when deployment
 
 ###  Step 10. Test and Get your inference data
 
-- If you using `Batch transform jobs` run one-time inference
+- If you used `Batch transform jobs` for one-time inference, can output inference data to S3. default: `s3://sagemaker-datalake-${REGION}-${ACCOUNTID}/transform-prediction/output/`
+
+- If you used `Endpoint` for real-time inference, can run `test-endpoint.py` invoke endpoint.
+
+```
+$ python test-endpoint.py ${ENDPOINT_NAME}
+```
 
 ## Running Costs
 
