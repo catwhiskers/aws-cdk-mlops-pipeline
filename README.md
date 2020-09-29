@@ -1,5 +1,14 @@
 # AWS CDK of SageMaker MLOps Build, Train and Deploy your own container
 
+## Table of contents
+
+- [Introduction](#introduction)
+- [Architecture](#architecture)
+- [Deployment](#deployment-steps)
+- [Running Costs](#running-costs)
+- [Parameters](#parameters)
+- [Test](#test)
+
 ## Introduction
 
 This’s a sample solution to build a deployment pipeline for Amazon SageMaker. For the complex execution process of machine learning, fast and simple model training can be realized through automation, and the ML code can be quickly updated to meet the demand.
@@ -116,7 +125,9 @@ After the training is completed, the model will also be deployed to SageMaker.
 
 ###  Step 8. Deployment Inference stage
 
-This step used instance type `ml.c4.xlarge` for the transform job.
+Inference deployment in this steps, choose `batch transform jobs` if you want one-time inference, or choose `endpoint` for real-time inference.
+
+ instance type `ml.c4.xlarge` for the transform job.
 
 Clone deployment repository
 
@@ -126,7 +137,9 @@ $ cp -R repository/deploy/* deploy-scikit_bring_your_own/
 $ cd deploy-scikit_bring_your_own/
 ```
 
-#### Create batch transform jobs for inference (default)
+- #### SageMaker Batch transform jobs for one-time inference (default)
+
+This deployment default using `ml.c4.xlarge` instance type for one-time forecast. The fee is calculated based on the EC2 operating cost.
 
 Refer to the model name generated of Step 7. to define `new_model_name` and `input_data` parameters.
 
@@ -134,14 +147,18 @@ Refer to the model name generated of Step 7. to define `new_model_name` and `inp
 env:
   variables:
     new_model_name: "scikit-bring-your-own-v1"
-    input_data: "s3://sagemaker-datalake-${AWS_DEFAULT_REGION}-${AWS_ACCOUNT_ID}/iris/input/iris.csv"
 phases:
+  install:
+    commands:
+      - input_data="s3://sagemaker-datalake-${AWS_DEFAULT_REGION}-${AWS_ACCOUNT_ID}/iris/input/iris.csv"
   build:
     commands:
       - python deploy-transform-job.py $new_model_name $input_data
 ```
 
-#### Create read-time endpoint for inference
+- #### SageMaker Endpoint for read-time inference
+
+This deployment default using `ml.t2.medium` instance type resident running. The fee is calculated based on the EC2 operating cost.
 
 Refer to the model name generated of Step 7. to define `new_model_name` parameter.
 
@@ -155,7 +172,7 @@ phases:
       - python deploy-endpoint.py $new_model_name
 ```
 
-#### Update blue/green model deployment read-time endpoint for inference
+- #### Update blue/green model deployment read-time endpoint for inference
 
 Refer to the new and old model name generated of Step 7. to define `new_model_name` and `live_model_name` parameters.
 
@@ -184,6 +201,9 @@ Notify reviewer `<deploy_approval_email>` to review and approval when deployment
 
 <img src="./img/deploy-approval.png" width="350">
 
+###  Step 10. Test and Get your inference data
+
+- If you using `Batch transform jobs` run one-time inference
 
 ## Running Costs
 

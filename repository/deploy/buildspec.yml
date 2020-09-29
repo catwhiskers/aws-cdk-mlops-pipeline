@@ -9,14 +9,14 @@ phases:
     runtime-versions:
       python: 3.7
     commands:
-      - INPUT_DATA="s3://sagemaker-datalake-${AWS_DEFAULT_REGION}-${AWS_ACCOUNT_ID}/iris/input/iris.csv"
+      - input_data="s3://sagemaker-datalake-${AWS_DEFAULT_REGION}-${AWS_ACCOUNT_ID}/iris/input/iris.csv"
   build:
     commands:
       - pip install -r requirements.txt
       #################################################
       #### If you deploy batch transform jobs (default)
       #################################################
-      - python deploy-transform-job.py $new_model_name $INPUT_DATA
+      - python deploy-transform-job.py $new_model_name $input_data
       #################################################
       #### If you deploy real-time endpoint
       ##### 1. first deploy use `deploy-endpoint.py
