@@ -4,7 +4,7 @@
 
 This’s a sample solution to build a deployment pipeline for Amazon SageMaker. For the complex execution process of machine learning, fast and simple model training can be realized through automation, and the ML code can be quickly updated to meet the demand.
 
-This solution provides as deployment by creating an Amazon SageMaker Endpoint for real-time inference.
+This solution provides as deployment by creating an Amazon SageMaker Endpoint/Transform for inference.
 
 ## Architecture
 ###  Architecture Diagram
@@ -71,9 +71,7 @@ TrainPipelineStack
 Deploy all stacks
 
 ```
-$ cdk deploy BuildPipelineStack
-$ cdk deploy TrainPipelineStack
-$ cdk deploy DeployPipelineStack
+$ cdk deploy "*"
 ```
 
 At the same time you can find these stacks in `CloudFormation`.
