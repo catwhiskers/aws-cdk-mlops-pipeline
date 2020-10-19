@@ -47,7 +47,7 @@ $ npm i -g aws-cdk
 For first initial, run `bootstrap` deploy in your acoount.
 
 ```bash
-$ cdk bootstrap
+$ cdk bootstrap aws://${your-account-id}/us-east-1
 ```
 
 ### Step 3. Configure deployment manager email
