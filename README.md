@@ -50,6 +50,12 @@ For first initial, run `bootstrap` deploy in your acoount.
 $ cdk bootstrap aws://${your-account-id}/us-east-1
 ```
 
+Install dependencies packages.
+
+```bash
+$ npm install
+```
+
 ### Step 3. Configure deployment manager email
 
 Modify `deploy_approval_email` in [cdk.content.json](https://github.com/shazi7804/aws-cdk-mlops-pipeline/blob/master/cdk.context.json), The deployment administrator will be notified for review when the model is deployed.
