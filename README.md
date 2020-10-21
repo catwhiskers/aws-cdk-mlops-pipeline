@@ -14,7 +14,7 @@ This solution provides as deployment by creating an Amazon SageMaker Endpoint/Tr
 
 ## Architecture
 ###  Architecture Diagram
-![mlops](./img/AWS-Machine-Learning-DevOps-Pipeline.jpg)
+![mlops](./img/AWS-Machine-Learning-DevOps-Pipeline.png)
 
 - `BuildPipelineStack`: This stack for algorithm build contains the deployment of [AWS CodeCommit][CodeCommit], [AWS CodeBuild][CodeBuild], [AWS CodePipeline][CodePipeline], [Amazon SNS][SNS] and [Amazon ECR][ECR].
 - `TrainPipelineStack`: This stack fo training jobs contains the deployment of [AWS CodeCommit][CodeCommit], [AWS CodeBuild][CodeBuild], [AWS CodePipeline][CodePipeline], [Amazon SNS][SNS] and [Amazon S3][S3].
