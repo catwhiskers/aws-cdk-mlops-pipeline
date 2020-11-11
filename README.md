@@ -36,12 +36,19 @@ This solution provides as deployment by creating an Amazon SageMaker Endpoint/Tr
 ###  Step 1. Prepare an AWS Account and IAM Access
 Create your AWS account at [http://aws.amazon.com](http://aws.amazon.com) by following the instructions on the site. Then create IAM User permission setting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in your environment variables.
 
+If you are using [cloud9](https://aws.amazon.com/cloud9/) to run this project. Please run following commands - 
+`git config --global credential.helper '!aws codecommit credential-helper $@'`
+`git config --global credential.UseHttpPath true`
+
 ###  Step 2. CDK Install and Bootstarp
 
 Install [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/tools.html) from npm
 
 ```bash
 $ npm i -g aws-cdk
+```
+```bash
+$ npm i -g typescript
 ```
 
 For first initial, run `bootstrap` deploy in your acoount.
