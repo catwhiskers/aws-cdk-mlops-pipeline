@@ -72,6 +72,7 @@ export class DeployPipelineStack extends cdk.Stack {
       "sagemaker:CreateEndpointConfig",
       "sagemaker:CreateEndpoint",
       "sagemaker:UpdateEndpoint",
+      "sagemaker:InvokeEndpoint",
       "iam:PassRole"
     );
     codebuildProject.addToRolePolicy(
