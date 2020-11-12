@@ -10,7 +10,9 @@ phases:
       - cd ./local_test 
       - ./train_local.sh sagemaker-scikit_bring_your_own
       - ./serve_local.sh sagemaker-scikit_bring_your_own &
+      - sleep 3   
       - ./predict.sh test.csv > out.txt 
-      - cat out.txt   
+      - e=`diff -y answer.csv out.txt | grep '|' | wc -l ` 
+      -  if [[ $e -gt -1 ]]; then exit 1; fi   
        
 
