@@ -16,11 +16,12 @@ phases:
       #################################################
       #### If you deploy batch transform jobs (default)
       #################################################
-      - python deploy-transform-job.py $new_model_name $input_data
+      #- python deploy-transform-job.py $new_model_name $input_data
       #################################################
       #### If you deploy real-time endpoint
       ##### 1. first deploy use `deploy-endpoint.py
       ##### 2. blue/green deploy use `update-endpoint.py`
       ################################################# 
-      # - python deploy-endpoint.py $new_model_name
+      - python deploy-endpoint.py $new_model_name
+      - python stress.py  
       # - python update-endpoint.py $live_model_name $new_model_name

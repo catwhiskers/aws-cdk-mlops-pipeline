@@ -29,3 +29,5 @@ resp = sagemaker.create_endpoint(
 )
 
 print(resp['EndpointArn'])
+
+
