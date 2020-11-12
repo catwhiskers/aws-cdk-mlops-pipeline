@@ -10,5 +10,7 @@ phases:
       - cd ./local_test 
       - ./train_local.sh sagemaker-scikit_bring_your_own
       - ./serve_local.sh sagemaker-scikit_bring_your_own &
-      - ./predict.sh payload.csv 
+      - ./predict.sh test.csv > out.txt 
+      - cat out.txt   
+       
 
