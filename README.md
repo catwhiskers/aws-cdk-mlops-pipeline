@@ -60,7 +60,7 @@ $ cdk bootstrap aws://${your-account-id}/us-east-1
 Install repository and dependencies packages.
 
 ```bash
-$ git clone https://github.com/shazi7804/aws-cdk-mlops-pipeline/
+$ git clone https://github.com/catwhiskers/aws-cdk-mlops-pipeline/
 $ cd aws-cdk-mlops-pipeline/
 $ npm install
 ```
