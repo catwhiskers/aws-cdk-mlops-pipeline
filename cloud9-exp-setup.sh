@@ -1,3 +1,4 @@
+npm install 
 
 account=$(aws sts get-caller-identity --query Account --output text)
 region=$(aws configure get region)

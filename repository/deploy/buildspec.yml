@@ -23,5 +23,6 @@ phases:
       ##### 2. blue/green deploy use `update-endpoint.py`
       ################################################# 
       - python deploy-endpoint.py $new_model_name
+      - sleep 300 
       - python stress.py  
       # - python update-endpoint.py $live_model_name $new_model_name
